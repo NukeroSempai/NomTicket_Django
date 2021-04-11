@@ -92,8 +92,8 @@ class producto(models.Model):
 
 #Tabla Intermedia Producto y comedores
 class producto_comedor(models.Model):
-    fk_comedor = models.ForeignKey(comedor,on_delete=models.PROTECT,null=False)
-    fk_producto = models.OneToOneField(producto,on_delete=models.PROTECT,null=False)
+    fk_comedor = models.OneToOneField(comedor,on_delete=models.PROTECT,null=False)
+    fk_producto = models.ForeignKey(producto,on_delete=models.PROTECT,null=False)
     cantidad = models.PositiveIntegerField('Cantidad',null=False,blank=False,default=0) #validacion en el modelo para que no se ingresen valores negativos
 
     class Meta:

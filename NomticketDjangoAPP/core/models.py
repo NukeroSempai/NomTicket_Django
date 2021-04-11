@@ -18,9 +18,9 @@ class comuna(models.Model):
 
 # Tabla Empresa
 class empresa(models.Model):
-    rut_empresa = models.CharField('Rut Empresa',max_length=15,primary_key=True)
-    rsocial_empresa = models.CharField('Razon Social Empresa',max_length=30,null=False,blank=False)
-    direccion_empresa = models.CharField('Direccion Empresa',max_length=30,null=True)
+    rut_empresa = models.CharField('Rut Empresa',max_length=30,primary_key=True)
+    rsocial_empresa = models.CharField('Razon Social Empresa',max_length=50,null=False,blank=False)
+    direccion_empresa = models.CharField('Direccion Empresa',max_length=50,null=True)
     fk_comuna = models.ForeignKey(comuna,on_delete=models.PROTECT,null=False) #no se puede borrar una empresa, si existe una comuna. (primero debe existir una comuna)
 
     class Meta:
@@ -34,7 +34,7 @@ class empresa(models.Model):
 #Tabla Sucursal
 class sucursal(models.Model):
     id_sucursal = models.AutoField(primary_key=True)
-    nom_sucursal = models.CharField('Nombre Sucursal',max_length=15,null=False,blank=False)
+    nom_sucursal = models.CharField('Nombre Sucursal',max_length=30,null=False,blank=False)
     fk_empresa = models.ForeignKey(empresa, on_delete=models.PROTECT,null=False) #no puede existir una sucursal que no tenga una empresa. (debe existir la empresa primero)
 
     class Meta:
@@ -47,9 +47,9 @@ class sucursal(models.Model):
 
 #Tabla Casino
 class casino(models.Model):
-    rut_casino = models.CharField('Rut Casino',max_length=15,primary_key=True)
-    rsocial_casino = models.CharField('Razon Social Casino',max_length=30,null=False,blank=False)
-    dir_casino = models.CharField('Direccion Casino',max_length=30,null=False,blank=False)
+    rut_casino = models.CharField('Rut Casino',max_length=30,primary_key=True)
+    rsocial_casino = models.CharField('Razon Social Casino',max_length=50,null=False,blank=False)
+    dir_casino = models.CharField('Direccion Casino',max_length=50,null=False,blank=False)
     fk_sucursal = models.ForeignKey(sucursal,on_delete=models.PROTECT,null=False,blank=False) #no puede existir un casino si no existe la sucursal primero (debe existir la sucursal primero)
 
     class Meta:
@@ -63,7 +63,7 @@ class casino(models.Model):
 #Tabla Comedor
 class comedor(models.Model):
     id_comedor = models.AutoField(primary_key=True)
-    nom_comedor = models.CharField('Nombre Comedor',max_length=15,null=False,blank=False)
+    nom_comedor = models.CharField('Nombre Comedor',max_length=30,null=False,blank=False)
     fk_casino = models.ForeignKey(casino,on_delete=models.PROTECT,null=False) #no puede existir un comedor si no existe un casino primero (debe existir el casino primero)
 
     class Meta:
@@ -77,9 +77,9 @@ class comedor(models.Model):
 #Tabla Producto
 #falta agregar archivos de imagenes, si fuese necesario.
 class producto(models.Model):
-    cod_prod = models.IntegerField('Codigo Producto',primary_key=True,null=False,blank=False)
-    nom_prod = models.CharField('Nombre Producto',max_length=15,null=False,blank=False)
-    des_prod = models.CharField('Descripcion',max_length=30,null=True)
+    cod_prod = models.AutoField(primary_key=True)
+    nom_prod = models.CharField('Nombre Producto',max_length=30,null=False,blank=False)
+    des_prod = models.TextField('Descripcion',max_length=50,null=True)
     precio_prod = models.PositiveIntegerField('Precio',null=False,blank=False,default=0) #validacion en el modelo para que no se ingresen valores negativos
 
     class Meta:
@@ -119,7 +119,7 @@ class pedido_casino(models.Model):
 #Tabla Intermedia pedido casino y producto
 class pedido_producto(models.Model):
     fk_pedido_casino = models.ForeignKey(pedido_casino,on_delete=models.PROTECT,null=False) #clave foranea pedido casino
-    fk_producto = models.ForeignKey(producto,on_delete=models.PROTECT,null=False,blank=False) #clave foranea de producto
+    fk_producto = models.ForeignKey(producto_comedor,on_delete=models.PROTECT,null=False,blank=False) #clave foranea de producto
     cantidad = models.PositiveIntegerField('Cantidad',null=False,blank=False,default=0)
 
     class Meta:
@@ -133,6 +133,7 @@ class ticket(models.Model):
     fecha_imp = models.DateField('Fecha de impresion',auto_now=False,auto_now_add=True,null=False)
     hora_vig_inicio = models.CharField('vigencia Hora Inicio',null=False,max_length=5)
     hora_vig_termino = models.CharField('vigencia Hora Termino',null=False,max_length=5)
+    valor = models.PositiveIntegerField('valor ticket',null=False,blank=False,default=0)
 
     class Meta:
         verbose_name = 'Ticket'
@@ -179,7 +180,7 @@ class boleta(models.Model):
 class informe_ticket_mensual(models.Model):
     correlativo_inf = models.AutoField(primary_key=True)
     fecha_proceso = models.DateField('Fecha de proceso',auto_now=False,auto_now_add=True,null=False)
-    comedor = models.CharField('Comedor',max_length=15,null=False,blank=False)
+    comedor = models.CharField('Comedor',max_length=30,null=False,blank=False)
     total_boletas = models.PositiveIntegerField(null=False)
     total_tickets = models.PositiveIntegerField(null=False)
     total_ventas = models.PositiveIntegerField(null=False)
@@ -211,7 +212,7 @@ class error_calc_tickets(models.Model):
 #Tabla tipo usuario
 class tipo_usuario(models.Model):
     cod_usuario = models.AutoField(primary_key=True)
-    desc_tipo_usuario = models.CharField('Descripcion',max_length=15,null=False,blank=False)
+    desc_tipo_usuario = models.CharField('Descripcion',max_length=30,null=False,blank=False)
 
     class Meta:
         verbose_name = 'Tipo de usuario'

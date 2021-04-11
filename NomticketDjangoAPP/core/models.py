@@ -93,7 +93,7 @@ class producto(models.Model):
 #Tabla Intermedia Producto y comedores
 class producto_comedor(models.Model):
     fk_comedor = models.ForeignKey(comedor,on_delete=models.PROTECT,null=False)
-    fk_producto = models.ForeignKey(producto,on_delete=models.PROTECT,null=False)
+    fk_producto = models.OneToOneField(producto,on_delete=models.PROTECT,null=False)
     cantidad = models.PositiveIntegerField('Cantidad',null=False,blank=False,default=0) #validacion en el modelo para que no se ingresen valores negativos
 
     class Meta:
@@ -142,24 +142,6 @@ class ticket(models.Model):
     def __str__(self):
         return self.cod_ticket + 'Fecha: ' + self.fecha_imp
 
-#Tabla boleta
-class boleta(models.Model):
-    num_boleta = models.AutoField(primary_key=True)
-    fec_boleta = models.DateField('fecha de boleta',auto_now=False,auto_now_add=True,null=False)
-    valor_total = models.IntegerField('Valor Total',null=False)
-    valor_ticket = models.IntegerField('Valor Ticket',null=True,blank=True)
-    saldo_por_pagar = models.PositiveIntegerField('Saldo por Pagar',null=False,blank=False,default=0) #evita que el saldo por pagar quede negativo, el valor por defecto siempre sera 0
-    fk_pedido_casino = models.ForeignKey(pedido_casino,on_delete=models.PROTECT,null=False) #para generar una boleta , esta debe de existir primero un pedido
-    fk_ticket = models.ForeignKey(ticket,on_delete=models.PROTECT,null=False) #para generar una boleta , esta debe de existir primero un ticket
-
-    class Meta:
-        verbose_name = 'Boleta'
-        verbose_name_plural = 'Boletas'
-        db_table = 'BOLETA'
-    
-    def __str__(self):
-        return self.num_boleta + 'Total =$ ' + self.valor_total + 'Fecha : ' + self.fec_boleta
-
 #Tabla Forma de pago
 class forma_pago(models.Model):
     cod_forma_pago = models.AutoField(primary_key=True)
@@ -172,6 +154,26 @@ class forma_pago(models.Model):
 
     def __str__(self):
         return self.nom_forma_pago
+
+#Tabla boleta
+class boleta(models.Model):
+    num_boleta = models.AutoField(primary_key=True)
+    fec_boleta = models.DateField('fecha de boleta',auto_now=False,auto_now_add=True,null=False)
+    valor_total = models.IntegerField('Valor Total',null=False)
+    valor_ticket = models.IntegerField('Valor Ticket',null=True,blank=True)
+    saldo_por_pagar = models.PositiveIntegerField('Saldo por Pagar',null=False,blank=False,default=0) #evita que el saldo por pagar quede negativo, el valor por defecto siempre sera 0
+    fk_pedido_casino = models.ForeignKey(pedido_casino,on_delete=models.PROTECT,null=False) #para generar una boleta , esta debe de existir primero un pedido
+    fk_ticket = models.ForeignKey(ticket,on_delete=models.PROTECT,null=False) #para generar una boleta , esta debe de existir primero un ticket
+    fk_forma_pago = models.ForeignKey(forma_pago,on_delete=models.PROTECT,null=False) #clave foranea de forma de pago, debe existir una forma de pago si o si
+
+    class Meta:
+        verbose_name = 'Boleta'
+        verbose_name_plural = 'Boletas'
+        db_table = 'BOLETA'
+    
+    def __str__(self):
+        return self.num_boleta + 'Total =$ ' + self.valor_total + 'Fecha : ' + self.fec_boleta
+
 
 #Tabla informe Tickets mensuales
 class informe_ticket_mensual(models.Model):
@@ -290,10 +292,17 @@ class empleado(models.Model):
         return self.id_emp + 'Nombre = ' + self.nom_emp + ' Apellido = ' + self.appaterno_emp
 
 #Tabla intermedia tickets y empleados para
-class tickets_empleados(models.Model):
+class tickets_usados(models.Model):
     fk_empleado = models.ForeignKey(empleado,on_delete=models.PROTECT,null=False) #clave foranea de empleado
     fk_ticket = models.OneToOneField(ticket,on_delete=models.PROTECT,null=False) #restriccion que solo 1 ticket puede ser usado a la vez (son unicos)
+    fk_turno = models.ForeignKey(turno,on_delete=models.PROTECT,null=False) #relacion turnos 
     fecha = models.DateTimeField(auto_now=False,auto_now_add=True,null=False)
+
+    class Meta:
+        verbose_name = 'ticket usado'
+        verbose_name_plural ='tickets usados'
+        db_table = 'tickets_usados'
+
 
 #Tabla empleado casino
 class empleado_casino(models.Model):
@@ -304,7 +313,7 @@ class empleado_casino(models.Model):
     rut_emp_casino = models.IntegerField('rut Empleado sin guion',null=False,blank=False)
     dv_rut_emp_casino = models.CharField('Numero verificador',max_length=1,null=False,blank=False)
     tel_emp_casino = models.IntegerField('Numero Empleado',null=False,blank=False)
-    password_emp_casino = models.CharField('Contraseña Empleado',max_length=10,null=False,blank=False)
+    password_emp_casino = models.CharField('Contraseña Empleado',max_length=50,null=False,blank=False)
     fk_comuna = models.ForeignKey(comuna,on_delete=models.PROTECT,null=False) #clave foranea de comuna
     fk_comedor = models.ForeignKey(comedor,on_delete=models.PROTECT,null=False) #clave foranea de comedor
     

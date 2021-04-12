@@ -73,12 +73,25 @@ class comedor(models.Model):
 
     def __str__(self):
         return self.nom_comedor
+#Tabla tipo producto 
+class tipo_producto(models.Model):
+    id_tipo_producto = models.AutoField(primary_key=True)
+    nom_tipo_producto = models.CharField('Nombre',max_length=30,null=False,blank=False)
+
+    class Meta:
+        verbose_name = 'tipo producto'
+        verbose_name_plural = 'tipo de productos'
+        db_table = 'TIPO_PRODUCTO'
+    
+    def __str__(self):
+        return self.nom_tipo_producto
 
 #Tabla Producto
 #falta agregar archivos de imagenes, si fuese necesario.
 class producto(models.Model):
     cod_prod = models.AutoField(primary_key=True)
     nom_prod = models.CharField('Nombre Producto',max_length=30,null=False,blank=False)
+    fk_tipo_producto = models.ForeignKey(tipo_producto,on_delete=models.PROTECT,null=False) #relacion tabla tipo de product
     des_prod = models.TextField('Descripcion',max_length=50,null=True)
     precio_prod = models.PositiveIntegerField('Precio',null=False,blank=False,default=0) #validacion en el modelo para que no se ingresen valores negativos
 
@@ -198,6 +211,7 @@ class informe_ticket_mensual(models.Model):
 #Tabla error calc tickets
 class error_calc_tickets(models.Model):
     correl_error = models.AutoField(primary_key=True)
+    fecha_error = models.DateField(auto_now=False,auto_now_add=True)
     rutina_error = models.CharField('error en',null=False,max_length=150)
     descrip_error = models.CharField('descripcion error',null=False,max_length=200)
 
@@ -257,7 +271,7 @@ class categoria_empleado(models.Model):
 
     class Meta:
         verbose_name = 'Categoria Empleado'
-        verbose_name_plural = 'Categoriass de Empleados'
+        verbose_name_plural = 'Categorias de Empleados'
         db_table = 'CATEGORIA_EMPLEADO'
 
     def __str__(self):
@@ -320,7 +334,7 @@ class empleado_casino(models.Model):
     
     class Meta:
         verbose_name = 'Empleado Casino'
-        verbose_name_plural = 'Casino Empleados'
+        verbose_name_plural = 'Empleados de Casinos'
         db_table = 'EMP_CASINO'
     
     def __str__(self):

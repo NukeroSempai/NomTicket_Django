@@ -101,18 +101,21 @@ class producto(models.Model):
         db_table = 'PRODUCTO'
 
     def __str__(self):
-        return self.nom_prod
+        return f"{self.nom_prod},{self.precio_prod},{self.fk_tipo_producto}"
 
 #Tabla Intermedia Producto y comedores
 class producto_comedor(models.Model):
-    fk_comedor = models.OneToOneField(comedor,on_delete=models.PROTECT,null=False)
-    fk_producto = models.ForeignKey(producto,on_delete=models.PROTECT,null=False)
+    fk_comedor = models.ForeignKey(comedor,on_delete=models.PROTECT,null=False)
+    fk_producto = models.OneToOneField(producto,on_delete=models.PROTECT,null=False)
     cantidad = models.PositiveIntegerField('Cantidad',null=False,blank=False,default=0) #validacion en el modelo para que no se ingresen valores negativos
 
     class Meta:
         verbose_name = 'Inventario comedor'
         verbose_name_plural = 'Inventario comedores'
         db_table = 'PRODUCTOS_COMEDOR'
+    
+    def __str__(self):
+        return f"{self.fk_comedor},{self.fk_producto},{self.cantidad}"
 
 
 
@@ -290,6 +293,7 @@ class empleado(models.Model):
     tel_emp = models.IntegerField('Numero Empleado',null=False,blank=False)
     sueldo_emp = models.IntegerField('Sueldo Empleado',null=False,blank=False)
     fecha_ingreso = models.DateField('Fecha de ingreso',auto_now=False,auto_now_add=True,null=False)
+    nombreUsuario = models.CharField('Nombre de usuario',null=False,blank=False,max_length=30,unique=True)
     password_emp = models.CharField('Contraseña Empleado',max_length=50,null=False,blank=False)
     fk_comuna = models.ForeignKey(comuna,on_delete=models.PROTECT,null=False) #clave foranea de comuna
     fk_categoria_empleado = models.ForeignKey(categoria_empleado,on_delete=models.PROTECT,null=False) #clave foranea categoria empleado
@@ -304,7 +308,7 @@ class empleado(models.Model):
         db_table = 'EMPLEADO'
 
     def __str__(self):
-        return self.id_emp + 'Nombre = ' + self.nom_emp + ' Apellido = ' + self.appaterno_emp
+        return f"{self.id_emp},{self.nom_emp},{self.appaterno_emp},{self.fk_categoria_empleado}"
 
 #Tabla intermedia tickets y empleados para
 class tickets_usados(models.Model):
@@ -338,5 +342,4 @@ class empleado_casino(models.Model):
         db_table = 'EMP_CASINO'
     
     def __str__(self):
-        return self.id_emp_casino + 'Nombre = ' + self.nom_emp_casino + ' Apellido = ' + self.appat_emp_casino
-
+        return f"{self.fk_comedor},{self.nom_emp_casino},{self.appat_emp_casino}"

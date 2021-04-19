@@ -1,0 +1,22 @@
+{% extends "empleado/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<p id="titulo_terciario">Registrarse</p>
+<form action="" method="post" autocomplete="off">
+    {% csrf_token %}
+    {{form|crispy}}
+    <!--button type="submit" class="btn btn-success">enviar</button-->
+    <div class="row">
+        <div class="col-md-8">
+            <button type="submit" class="btn btn-success btn-block btn-lg"><i class="fas fa-database"></i>
+                Guardar</button>
+        </div>
+        <div class="col-md-4">
+            <a href="{% url 'lista_empleado' %}" class="btn btn-secondary btn-block btn-lg">
+                <i class="fas fa-stream"></i> Lista
+            </a>
+        </div>
+    </div>
+</form>
+{% endblock content %}

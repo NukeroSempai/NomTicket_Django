@@ -1,0 +1,42 @@
+{% extends "empleado/base.html" %}
+
+{% block content %}
+<p id="titulo_terciario">Lista empleados</p>
+<table class="table table-borderless">
+    <thead class="border-bottom font-weight-bold">
+        <tr>
+            <td>Nombre</td>
+            <td>Apellido Paterno</td>
+            <td>Apellido Materno</td>
+            <td>Email</td>
+            <td>Telefono</td>
+            <td>Direccion</td>
+            <td>Comuna</td>
+            <td>departamento</td>
+            <td>Cargo</td>
+            <td>
+                <a href="{% url 'registrar_empleado' %}" class="btn btn-outline-success">
+                    <i class="fas fa-plus"></i> agregar nuevo
+                </a>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for empleado in empleados %}
+            <tr>
+                <td>{{empleado.nom_emp}}</td>
+                <td>{{empleado.apppaterno_emp}}</td>
+                <td>{{empleado.appmaterno_emp}}</td>
+                <td>{{empleado.email_emp}}</td>
+                <td>{{empleado.tel_emp}}</td>
+                <td>{{empleado.direccion_emp}}</td>
+                <td>{{empleado.fk_comuna}}</td>
+                <td>{{empleado.fk_departamento}}</td>
+                <td>{{empleado.fk_categoria_empleado}}</td>
+                <td>
+                </td>    
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

@@ -1,27 +1,23 @@
 from django.contrib import admin
-from CORE.models import * 
+from CORE.models import *
 
-class producto_comedorAdmin(admin.ModelAdmin):
-    list_display=('fk_comedor',"fk_producto","cantidad")
-class empleadoAdmin(admin.ModelAdmin):
-    list_display=('nom_emp',"appaterno_emp","apmaterno_emp","fk_categoria_empleado")
-class productoAdmin(admin.ModelAdmin):
-    list_display=('nom_prod','precio_prod','fk_tipo_producto')
-    
-# Register your models here.
+class EMPLEADO_ADMIN(admin.ModelAdmin):
+    list_display=("rut_emp","nom_emp","appaterno_emp","apmaterno_emp","fk_perfil")
 
-admin.site.register(comuna)
-admin.site.register(empresa)
-admin.site.register(sucursal)
-admin.site.register(casino)
-admin.site.register(comedor)
-admin.site.register(tipo_producto)
-admin.site.register(producto)
-admin.site.register(producto_comedor,producto_comedorAdmin)
-admin.site.register(forma_pago)
-admin.site.register(tipo_usuario)
-admin.site.register(departamento)
-admin.site.register(categoria_empleado)
-admin.site.register(turno)
-admin.site.register(empleado,empleadoAdmin)
-admin.site.register(empleado_casino)
+
+admin.site.register(PERFIL)
+admin.site.register(COMUNA)
+admin.site.register(TIPO_TICKET)
+admin.site.register(DETALLE_AUDITORIA)
+admin.site.register(AUDITORIA)
+admin.site.register(TURNO)
+admin.site.register(FORMA_PAGO)
+admin.site.register(CAJERO)
+admin.site.register(EMPLEADO,EMPLEADO_ADMIN)
+admin.site.register(TICKET)
+admin.site.register(BOLETA)
+admin.site.register(DETALLE_BOLETA)
+admin.site.register(PRODUCTO)
+admin.site.register(TIPO_PRODUCTO)
+admin.site.register(ERRORES)
+admin.site.register(INFORME_TICKET)

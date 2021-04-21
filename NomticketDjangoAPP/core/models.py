@@ -1,345 +1,234 @@
 from django.db import models
 
 # Create your models here.
-
-# Tabla Comuna
-class comuna(models.Model):
-    id_comuna = models.AutoField(primary_key=True)
-    nombre = models.CharField('Nombre',max_length=50,null=False,blank=False)    
+#**************************************************************************************************************
+class TIPO_PRODUCTO(models.Model):
+    id_tipo_producto = models.AutoField(primary_key=True)   #clave primaria
+    nom_tipo_producto = models.CharField("nombre categoria",max_length=30,null=False)
 
     class Meta:
-        verbose_name = 'Comuna'
-        verbose_name_plural = 'Comunas'
-        db_table = 'COMUNA'
+        verbose_name = "tipo producto"
+        verbose_name_plural = "tipo productos"
+        db_table = "TIPO_PRODUCTO"
+
+    def __str__(self):
+        return self.nom_tipo_producto
+#**************************************************************************************************************
+class PRODUCTO(models.Model):
+    codigo_producto = models.AutoField(primary_key=True)    #clave primaria
+    nom_producto = models.CharField("nombre producto",max_length=30,null=False,blank=False)
+    descripcion = models.TextField("descripcion",max_length=100,null=False, blank=False)
+    precio = models.PositiveIntegerField("precio $")
+    fk_tipo_producto = models.ForeignKey(TIPO_PRODUCTO,on_delete=models.PROTECT,null=False)
+
+    class Meta:
+        verbose_name ="producto"
+        verbose_name_plural ="productos"
+        db_table = "PRODUCTO"
+    
+    def __str__(self):
+        return f"{self.nom_producto},{self.fk_tipo_producto},{self.precio}"
+#**************************************************************************************************************
+class TIPO_TICKET(models.Model):
+    id_tipo_ticket = models.AutoField(primary_key=True)     #clave primaria
+    descripcion = models.CharField("tipo ticket",null=False,blank=False,max_length=30)
+
+    class Meta:
+        verbose_name ="tipo de ticket"
+        verbose_name_plural ="tipos de tickets"
+        db_table = "TIPO_TICKET"
+    
+    def __str__(self):
+        return self.descripcion
+
+#**************************************************************************************************************
+class PERFIL(models.Model):
+    id_perfil = models.AutoField(primary_key=True)      #clave primaria
+    nombre_prefil = models.CharField("nombre prefil",null=False,blank=False,max_length=30)
+    ticket_diario = models.PositiveIntegerField("cantidad de tickets diarios",null=False,default=1)
+    valor = models.PositiveIntegerField("valor ticket",null=False)
+    bonificacion = models.PositiveIntegerField("bonificacion",null=False,default=0)
+
+    class Meta:
+        verbose_name ="perfil"
+        verbose_name_plural="perfiles"
+        db_table = "PERFIL"
+
+    def __str__(self):
+        return self.nombre_prefil
+#**************************************************************************************************************
+class TURNO(models.Model):
+    id_turno = models.AutoField(primary_key=True)   #Clave primaria
+    nombre = models.CharField("nombre turno",null=False,blank=False,max_length=30)
+    hora_inicio = models.CharField("hora inicio",max_length=5,null=False,blank=False)
+    hora_termino = models.CharField("hora termino",max_length=5,null=False,blank=False)
+
+    class Meta:
+        verbose_name ="turno"
+        verbose_name_plural="turnos"
+        db_table ="TURNO"
     
     def __str__(self):
         return self.nombre
-
-
-# Tabla Empresa
-class empresa(models.Model):
-    rut_empresa = models.CharField('Rut Empresa',max_length=30,primary_key=True)
-    rsocial_empresa = models.CharField('Razon Social Empresa',max_length=50,null=False,blank=False)
-    direccion_empresa = models.CharField('Direccion Empresa',max_length=50,null=True)
-    fk_comuna = models.ForeignKey(comuna,on_delete=models.PROTECT,null=False) #no se puede borrar una empresa, si existe una comuna. (primero debe existir una comuna)
+#**************************************************************************************************************
+class COMUNA(models.Model):
+    id_comuna = models.AutoField(primary_key=True)
+    nombre = models.CharField("nombre comuna",max_length=30,null=False,blank=False)
 
     class Meta:
-        verbose_name = 'Empresa'
-        verbose_name_plural = 'Empresas'
-        db_table = 'EMPRESA'
+        verbose_name ="comuna"
+        verbose_name_plural ="comunas"
+        db_table="COMUNA"
+
+    def __str__(self):
+        return self.nombre
+#**************************************************************************************************************
+class EMPLEADO(models.Model):
+    rut_emp = models.CharField("rut empleado (sin puntos con guion)",primary_key=True,max_length=10,null=False,blank=False)
+    nom_emp = models.CharField("nombre",max_length=30,null=False,blank=False)
+    appaterno_emp = models.CharField("apellido paterno",max_length=30,null=False,blank=False)
+    apmaterno_emp = models.CharField("apellido materno",max_length=30,null=False,blank=False)
+    clave = models.CharField("contraseña",max_length=50,null=False,blank=False)
+    fk_comuna = models.ForeignKey(COMUNA,on_delete=models.PROTECT,null=False)
+    fk_perfil = models.ForeignKey(PERFIL,on_delete=models.PROTECT,null=False)
+    fk_turno = models.ForeignKey(TURNO,on_delete=models.PROTECT,null=False)
+
+    class Meta:
+        verbose_name ="empleado"
+        verbose_name_plural="empleados"
+        db_table = "EMPLEADO"
     
     def __str__(self):
-        return self.rut_empresa + ' - ' + self.rsocial_empresa
-
-#Tabla Sucursal
-class sucursal(models.Model):
-    id_sucursal = models.AutoField(primary_key=True)
-    nom_sucursal = models.CharField('Nombre Sucursal',max_length=30,null=False,blank=False)
-    fk_empresa = models.ForeignKey(empresa, on_delete=models.PROTECT,null=False) #no puede existir una sucursal que no tenga una empresa. (debe existir la empresa primero)
-
-    class Meta:
-        verbose_name = 'Sucursal'
-        verbose_name_plural = 'Sucursales'
-        db_table = 'SUCURSAL'
-
-    def __str__(self):
-        return self.nom_sucursal
-
-#Tabla Casino
-class casino(models.Model):
-    rut_casino = models.CharField('Rut Casino',max_length=30,primary_key=True)
-    rsocial_casino = models.CharField('Razon Social Casino',max_length=50,null=False,blank=False)
-    dir_casino = models.CharField('Direccion Casino',max_length=50,null=False,blank=False)
-    fk_sucursal = models.ForeignKey(sucursal,on_delete=models.PROTECT,null=False,blank=False) #no puede existir un casino si no existe la sucursal primero (debe existir la sucursal primero)
+        return f"{self.rut_emp},{self.nom_emp},{self.appaterno_emp},{self.apmaterno_emp},{self.fk_perfil}"
+#**************************************************************************************************************
+class TICKET(models.Model):
+    codigo_ticket = models.AutoField(primary_key=True)
+    fecha_imp = models.DateField("fecha impresion",auto_now=False,auto_now_add=True,null=False)
+    hora_vig_inicio = models.CharField("hora inicio",max_length=5,null=False,blank=False)
+    hora_vig_termino = models.CharField("hora termino",max_length=5,null=False,blank=False)
+    estado = models.BooleanField("estado del ticket",default=True)
+    valor = models.PositiveIntegerField("valor ticket")
+    comentario = models.TextField("comentario",null=True,blank=True,max_length=100)
+    fk_rut_emp = models.ForeignKey(EMPLEADO,on_delete=models.PROTECT,null=False) 
+    fk_tipo_ticket = models.ForeignKey(TIPO_TICKET,on_delete=models.PROTECT,null=False)
 
     class Meta:
-        verbose_name = 'Casino'
-        verbose_name_plural = 'Casinos'
-        db_table = 'CASINO'
-
-    def __str__(self):
-        return self.rsocial_casino
-
-#Tabla Comedor
-class comedor(models.Model):
-    id_comedor = models.AutoField(primary_key=True)
-    nom_comedor = models.CharField('Nombre Comedor',max_length=30,null=False,blank=False)
-    fk_casino = models.ForeignKey(casino,on_delete=models.PROTECT,null=False) #no puede existir un comedor si no existe un casino primero (debe existir el casino primero)
-
-    class Meta:
-        verbose_name = 'Comedor'
-        verbose_name_plural = 'Comedores'
-        db_table = 'COMEDOR'
-
-    def __str__(self):
-        return self.nom_comedor
-#Tabla tipo producto 
-class tipo_producto(models.Model):
-    id_tipo_producto = models.AutoField(primary_key=True)
-    nom_tipo_producto = models.CharField('Nombre',max_length=30,null=False,blank=False)
-
-    class Meta:
-        verbose_name = 'tipo producto'
-        verbose_name_plural = 'tipo de productos'
-        db_table = 'TIPO_PRODUCTO'
+        verbose_name ="ticket"
+        verbose_name_plural="tickets"
+        db_table = "TICKET"
     
     def __str__(self):
-        return self.nom_tipo_producto
-
-#Tabla Producto
-#falta agregar archivos de imagenes, si fuese necesario.
-class producto(models.Model):
-    cod_prod = models.AutoField(primary_key=True)
-    nom_prod = models.CharField('Nombre Producto',max_length=30,null=False,blank=False)
-    fk_tipo_producto = models.ForeignKey(tipo_producto,on_delete=models.PROTECT,null=False) #relacion tabla tipo de product
-    des_prod = models.TextField('Descripcion',max_length=50,null=True)
-    precio_prod = models.PositiveIntegerField('Precio',null=False,blank=False,default=0) #validacion en el modelo para que no se ingresen valores negativos
+        return f"{self.codigo_ticket},{self.fecha_imp},{self.estado}"
+#**************************************************************************************************************
+class CAJERO(models.Model):
+    rut_cajero = models.CharField("rut cajero",primary_key=True,null=False,blank=False,max_length=10)  #clave primaria
+    nombre = models.CharField("nombre cajero",max_length=30,null=False,blank=False)
+    clave = models.CharField("contraseña",max_length=50,null=False,blank=False)
 
     class Meta:
-        verbose_name = 'Producto'
-        verbose_name_plural = 'Productos'
-        db_table = 'PRODUCTO'
-
-    def __str__(self):
-        return f"{self.nom_prod},{self.precio_prod},{self.fk_tipo_producto}"
-
-#Tabla Intermedia Producto y comedores
-class producto_comedor(models.Model):
-    fk_comedor = models.ForeignKey(comedor,on_delete=models.PROTECT,null=False)
-    fk_producto = models.ForeignKey(producto,on_delete=models.PROTECT,null=False)
-    cantidad = models.PositiveIntegerField('Cantidad',null=False,blank=False,default=0) #validacion en el modelo para que no se ingresen valores negativos
-
-    class Meta:
-        verbose_name = 'Inventario comedor'
-        verbose_name_plural = 'Inventario comedores'
-        db_table = 'PRODUCTOS_COMEDOR'
+        verbose_name ="cajero"
+        verbose_name_plural ="cajeros"
+        db_table ="CAJERO"
     
     def __str__(self):
-        return f"{self.fk_comedor},{self.fk_producto},{self.cantidad}"
-
-
-
-#Tabla Pedido casino
-class pedido_casino(models.Model):
-    cod_pedido = models.AutoField(primary_key=True)
-    fec_pedido = models.DateField('Fecha de pedido',auto_now=False,auto_now_add=True,null=False)
+        return self.nombre
+#**************************************************************************************************************
+class FORMA_PAGO(models.Model):
+    id_forma_pago = models.AutoField(primary_key=True)  #clave primaria
+    nombre_forma_pago = models.CharField(max_length=30,null=False,blank=False)
 
     class Meta:
-        verbose_name = 'Pedido'
-        verbose_name_plural = 'Pedidos'
-        db_table = 'PEDIDO_CASINO'
+        verbose_name = "forma de pago"
+        verbose_name_plural = "formas de pago"
+        db_table ="FORMAS_PAGO"
     
     def __str__(self):
-        return self.fec_pedido + ' Codigo = ' + self.cod_pedido
-
-#Tabla Intermedia pedido casino y producto
-class pedido_producto(models.Model):
-    fk_pedido_casino = models.ForeignKey(pedido_casino,on_delete=models.PROTECT,null=False) #clave foranea pedido casino
-    fk_producto = models.ForeignKey(producto_comedor,on_delete=models.PROTECT,null=False,blank=False) #clave foranea de producto
-    cantidad = models.PositiveIntegerField('Cantidad',null=False,blank=False,default=0)
-
-    class Meta:
-        verbose_name = 'pedido de producto'
-        verbose_name_plural = 'pedido  de productos'
-        db_table = 'PEDIDO_PRODUCTOS'
-
-#Tabla Ticket
-class ticket(models.Model):
-    cod_ticket = models.AutoField(primary_key=True)
-    fecha_imp = models.DateField('Fecha de impresion',auto_now=False,auto_now_add=True,null=False)
-    hora_vig_inicio = models.CharField('vigencia Hora Inicio',null=False,max_length=5)
-    hora_vig_termino = models.CharField('vigencia Hora Termino',null=False,max_length=5)
-    valor = models.PositiveIntegerField('valor ticket',null=False,blank=False,default=0)
+        return self.nombre_forma_pago
+#**************************************************************************************************************
+class BOLETA(models.Model):
+    num_boleta = models.AutoField(primary_key=True)     #clave primaria
+    fecha_boleta = models.DateField("fecha emision",auto_now=False,auto_now_add=True)
+    valor_total = models.PositiveIntegerField("total")
+    valor_ticket = models.PositiveIntegerField("valor ticket")
+    saldo_por_pagar = models.PositiveIntegerField("saldo por pagar",null=True,default=0)
+    fk_codigo_ticket = models.ForeignKey(TICKET,on_delete=models.PROTECT,null=False)
+    fk_forma_pago = models.ForeignKey(FORMA_PAGO,on_delete=models.PROTECT,null=False)
+    fk_rut_cajero = models.ForeignKey(CAJERO,on_delete=models.PROTECT,null=False)
 
     class Meta:
-        verbose_name = 'Ticket'
-        verbose_name_plural = 'Tickets'
-        db_table = 'TICKET'
+        verbose_name ="boleta"
+        verbose_name_plural="boletas"
+        db_table ="BOLETA"
+
+    def __str__(self):
+        return f"{self.num_boleta},{self.fecha_boleta},{self.valor_total}"
+#**************************************************************************************************************
+class DETALLE_BOLETA(models.Model):
+    fk_num_boleta = models.ForeignKey(BOLETA,on_delete=models.PROTECT,null=False)
+    fk_codigo_producto = models.ForeignKey(PRODUCTO,on_delete=models.PROTECT,null=False)
+    cantidad = models.PositiveIntegerField("cantidad")
+
+    class Meta:
+        verbose_name = "detalle boleta"
+        verbose_name_plural = "detalle boletas"
+        db_table="DETALLE_BOLETA"
+
+    def __str__(self):
+        return f"{self.fk_num_boleta},{self.fk_codigo_producto},{self.cantidad}"
+#**************************************************************************************************************
+class AUDITORIA(models.Model):
+    correlativo_aud = models.AutoField(primary_key=True)    #clave primaria
+    fecha_auditoria = models.DateField("fecha auditoria",auto_now=False,auto_now_add=True)
+
+    class Meta:
+        verbose_name ="auditoria"
+        verbose_name_plural="auditorias"
+        db_table ="AUDITORIA"
     
     def __str__(self):
-        return self.cod_ticket + 'Fecha: ' + self.fecha_imp
-
-#Tabla Forma de pago
-class forma_pago(models.Model):
-    cod_forma_pago = models.AutoField(primary_key=True)
-    nom_forma_pago = models.CharField('Nombre forma de pago',max_length=30,null=False,blank=False)
+        return f"{self.correlativo_aud},{self.fecha_auditoria}"
+#**************************************************************************************************************
+class DETALLE_AUDITORIA(models.Model):
+    fk_correlativo_aud = models.ForeignKey(AUDITORIA,on_delete=models.PROTECT,null=False)
+    fk_rut_emp = models.ForeignKey(EMPLEADO,on_delete=models.PROTECT,null=False)
+    fecha_no_uso = models.DateField("fecha no uso",null=False)
 
     class Meta:
-        verbose_name = 'Forma de pago'
-        verbose_name_plural = 'Formas de pago'
-        db_table = 'FORMA_PAGO'
+        verbose_name = "detalle auditoria"
+        verbose_name_plural ="detalle auditorias"
+        db_table ="DETALLE_AUDITORIA"
 
     def __str__(self):
-        return self.nom_forma_pago
-
-#Tabla boleta
-class boleta(models.Model):
-    num_boleta = models.AutoField(primary_key=True)
-    fec_boleta = models.DateField('fecha de boleta',auto_now=False,auto_now_add=True,null=False)
-    valor_total = models.IntegerField('Valor Total',null=False)
-    valor_ticket = models.IntegerField('Valor Ticket',null=True,blank=True)
-    saldo_por_pagar = models.PositiveIntegerField('Saldo por Pagar',null=False,blank=False,default=0) #evita que el saldo por pagar quede negativo, el valor por defecto siempre sera 0
-    fk_pedido_casino = models.ForeignKey(pedido_casino,on_delete=models.PROTECT,null=False) #para generar una boleta , esta debe de existir primero un pedido
-    fk_ticket = models.ForeignKey(ticket,on_delete=models.PROTECT,null=False) #para generar una boleta , esta debe de existir primero un ticket
-    fk_forma_pago = models.ForeignKey(forma_pago,on_delete=models.PROTECT,null=False) #clave foranea de forma de pago, debe existir una forma de pago si o si
+        return f"{self.fk_correlativo_aud},{self.fk_rut_emp}"
+#**************************************************************************************************************
+class ERRORES(models.Model):
+    correlativo_error = models.AutoField(primary_key=True)      #clave primaria 
+    fecha_error = models.DateField("fecha error",auto_now=False,auto_now_add=True,null=False)
+    nombre_modulo = models.CharField("nombre modulo",max_length=150,null=False,blank=False)
+    descripcion_error = models.CharField("descripcion error",max_length=200,null=False,blank=False)
 
     class Meta:
-        verbose_name = 'Boleta'
-        verbose_name_plural = 'Boletas'
-        db_table = 'BOLETA'
+        verbose_name ="error"
+        verbose_name_plural ="errores"
+        db_table="ERRORES"
     
     def __str__(self):
-        return self.num_boleta + 'Total =$ ' + self.valor_total + 'Fecha : ' + self.fec_boleta
+        return f"{self.correlativo_error},{self.fecha_error},{self.nombre_modulo}"
 
-
-#Tabla informe Tickets mensuales
-class informe_ticket_mensual(models.Model):
-    correlativo_inf = models.AutoField(primary_key=True)
-    fecha_proceso = models.DateField('Fecha de proceso',auto_now=False,auto_now_add=True,null=False)
-    comedor = models.CharField('Comedor',max_length=30,null=False,blank=False)
-    total_boletas = models.PositiveIntegerField(null=False)
-    total_tickets = models.PositiveIntegerField(null=False)
-    total_ventas = models.PositiveIntegerField(null=False)
-    cant_boletas = models.PositiveIntegerField(null=False)
-    cant_tickets = models.PositiveIntegerField(null=False)
+#**************************************************************************************************************
+class INFORME_TICKET(models.Model):
+    correlativo_inf = models.AutoField(primary_key=True)    #clave primaria
+    fecha_informe = models.DateField("fecha informe",auto_now=False,auto_now_add=True,null=False)
+    cant_boletas = models.PositiveIntegerField("cantidad de boletas")
+    cant_tickets = models.PositiveIntegerField("cantidad de tickets")
+    total_ventas = models.PositiveIntegerField("total de ventas")
 
     class Meta:
-        verbose_name = 'Informe'
-        verbose_name_plural = 'Informes'
-        db_table = 'INFORME_TICKET_MENSUAL'
+        verbose_name ="informe ticket"
+        verbose_name_plural="informes tickets"
+        db_table="INFORME_TICKET"
     
-    def __str__(self):
-        return self.fecha_proceso + 'Comedor = ' + self.comedor
+    def __str__(self)        :
+        return f"{self.correlativo_inf},{self.fecha_informe},{self.total_ventas}"
+#**************************************************************************************************************
 
-#Tabla error calc tickets
-class error_calc_tickets(models.Model):
-    correl_error = models.AutoField(primary_key=True)
-    fecha_error = models.DateField(auto_now=False,auto_now_add=True)
-    rutina_error = models.CharField('error en',null=False,max_length=150)
-    descrip_error = models.CharField('descripcion error',null=False,max_length=200)
-
-    class Meta:
-        verbose_name = 'Error de calculo de ticket'
-        verbose_name_plural = 'Errores de calculo de tickets'
-        db_table = 'ERROR_CALC_TICKET'
-    
-    def __str__(self):
-        return self.correl_error + ' rutina : ' + self.rutina_error
-
-#Tabla tipo usuario
-class tipo_usuario(models.Model):
-    cod_usuario = models.AutoField(primary_key=True)
-    desc_tipo_usuario = models.CharField('Descripcion',max_length=30,null=False,blank=False)
-
-    class Meta:
-        verbose_name = 'Tipo de usuario'
-        verbose_name_plural = 'Tipos de usuarios'
-        db_table = 'TIPO_USUARIO'
-    
-    def __str__(self):
-        return self.desc_tipo_usuario
-
-#Tabla turnos
-class turno(models.Model):
-    id_turno = models.AutoField(primary_key=True)
-    nom_turno = models.CharField('Nombre Turno',max_length=15,null=False,blank=False)
-    hora_inicio = models.CharField('Hora inicio',max_length=5,null=False,blank=False)
-    hora_termino = models.CharField('Hora termino',max_length=5,null=False,blank=False)
-
-    class Meta:
-        verbose_name = 'Turno'
-        verbose_name_plural ='Turnos'
-        db_table = 'TURNO'
-    
-    def __str__(self):
-        return self.nom_turno
-
-#Tabla departamento
-class departamento(models.Model):
-    id_departamento = models.AutoField(primary_key=True)
-    nom_departamento = models.CharField('Nombre Departamento',max_length=30,null=False,blank=False)
-
-    class Meta:
-        verbose_name = 'Departamento'
-        verbose_name_plural = 'Departamentos'
-        db_table = 'DEPARTAMENTO'
-    
-    def __str__(self):
-        return self.nom_departamento
-
-#Tabla categoria Empleado
-class categoria_empleado(models.Model):
-    id_categoria_emp = models.AutoField(primary_key=True)
-    desc_categoria_emp = models.CharField('Descripcion Categoria Empleado',max_length=30,null=False,blank=False)
-
-    class Meta:
-        verbose_name = 'Categoria Empleado'
-        verbose_name_plural = 'Categorias de Empleados'
-        db_table = 'CATEGORIA_EMPLEADO'
-
-    def __str__(self):
-        return self.desc_categoria_emp
-
-#Tabla Empleado
-class empleado(models.Model):
-    id_emp = models.AutoField(primary_key=True)
-    nom_emp = models.CharField('Nombre',max_length=30,null=False,blank=False)
-    appaterno_emp = models.CharField('Apellido paterno',max_length=30,null=False,blank=False)
-    apmaterno_emp = models.CharField('Apellido materno',max_length=30,null=False,blank=False)
-    numrut_emp = models.IntegerField('rut Empleado sin guion',null=False,blank=False)
-    dvrut_emp = models.CharField('Numero verificador',max_length=1,null=False,blank=False)
-    direccion_emp = models.CharField('Direccion Empleado',max_length=30,null=False,blank=False)
-    email_emp = models.EmailField('Email Empleado',max_length=30,null=False,blank=False)
-    tel_emp = models.IntegerField('Numero Empleado',null=False,blank=False)
-    sueldo_emp = models.IntegerField('Sueldo Empleado',null=False,blank=False)
-    fecha_ingreso = models.DateField('Fecha de ingreso',auto_now=False,auto_now_add=True,null=False)
-    nombreUsuario = models.CharField('Nombre de usuario',null=False,blank=False,max_length=30,unique=True)
-    password_emp = models.CharField('Contraseña Empleado',max_length=50,null=False,blank=False)
-    fk_comuna = models.ForeignKey(comuna,on_delete=models.PROTECT,null=False) #clave foranea de comuna
-    fk_categoria_empleado = models.ForeignKey(categoria_empleado,on_delete=models.PROTECT,null=False) #clave foranea categoria empleado
-    fk_departamento = models.ForeignKey(departamento,on_delete=models.PROTECT,null=False) #clave  foranea de departamento
-    fk_turno = models.ForeignKey(turno,on_delete=models.PROTECT,null=False) #clave foranea de turno
-    fk_tipo_usuario = models.ForeignKey(tipo_usuario,on_delete=models.PROTECT,null=False) #clave foranea de tipo usuario
-
-    
-    class Meta:
-        verbose_name = 'Empleado'
-        verbose_name_plural = 'Empleados'
-        db_table = 'EMPLEADO'
-
-    def __str__(self):
-        return f"{self.id_emp},{self.nom_emp},{self.appaterno_emp},{self.fk_categoria_empleado}"
-
-#Tabla intermedia tickets y empleados para
-class tickets_usados(models.Model):
-    fk_empleado = models.ForeignKey(empleado,on_delete=models.PROTECT,null=False) #clave foranea de empleado
-    fk_ticket = models.OneToOneField(ticket,on_delete=models.PROTECT,null=False) #restriccion que solo 1 ticket puede ser usado a la vez (son unicos)
-    fk_turno = models.ForeignKey(turno,on_delete=models.PROTECT,null=False) #relacion turnos 
-    fecha = models.DateTimeField(auto_now=False,auto_now_add=True,null=False)
-
-    class Meta:
-        verbose_name = 'ticket usado'
-        verbose_name_plural ='tickets usados'
-        db_table = 'tickets_usados'
-
-
-#Tabla empleado casino
-class empleado_casino(models.Model):
-    id_emp_casino = models.AutoField(primary_key=True)
-    nom_emp_casino = models.CharField('Nombre',max_length=30,null=False,blank=False)
-    appat_emp_casino = models.CharField('Apellido paterno',max_length=30,null=False,blank=False)
-    apmat_emp_casino = models.CharField('Apellido materno',max_length=30,null=False,blank=False)
-    rut_emp_casino = models.IntegerField('rut Empleado sin guion',null=False,blank=False)
-    dv_rut_emp_casino = models.CharField('Numero verificador',max_length=1,null=False,blank=False)
-    tel_emp_casino = models.IntegerField('Numero Empleado',null=False,blank=False)
-    password_emp_casino = models.CharField('Contraseña Empleado',max_length=50,null=False,blank=False)
-    fk_comuna = models.ForeignKey(comuna,on_delete=models.PROTECT,null=False) #clave foranea de comuna
-    fk_comedor = models.ForeignKey(comedor,on_delete=models.PROTECT,null=False) #clave foranea de comedor
-    
-    class Meta:
-        verbose_name = 'Empleado Casino'
-        verbose_name_plural = 'Empleados de Casinos'
-        db_table = 'EMP_CASINO'
-    
-    def __str__(self):
-        return f"{self.fk_comedor},{self.nom_emp_casino},{self.appat_emp_casino}"

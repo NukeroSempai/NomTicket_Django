@@ -1,4 +1,4 @@
-{% extends "empleado/base.html" %}
+{% extends "CORE/base.html" %}
 
 {% block content %}
 <p id="titulo_terciario">Lista empleados</p>
@@ -25,8 +25,8 @@
         {% for empleado in empleados %}
             <tr>
                 <td>{{empleado.nom_emp}}</td>
-                <td>{{empleado.apppaterno_emp}}</td>
-                <td>{{empleado.appmaterno_emp}}</td>
+                <td>{{empleado.appaterno_emp}}</td>
+                <td>{{empleado.apmaterno_emp}}</td>
                 <td>{{empleado.email_emp}}</td>
                 <td>{{empleado.tel_emp}}</td>
                 <td>{{empleado.direccion_emp}}</td>
@@ -34,6 +34,15 @@
                 <td>{{empleado.fk_departamento}}</td>
                 <td>{{empleado.fk_categoria_empleado}}</td>
                 <td>
+                    <a href="{% url 'modificar_empleado' empleado.id_emp %}" class="btn text-secondary px-0">
+                        <i class="far fa-edit fa-lg"></i>
+                    </a>
+                    <form action="{% url 'eliminar_empleado' empleado.id_emp %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">
+                            <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+                        </button>
+                    </form>
                 </td>    
             </tr>
         {% endfor %}

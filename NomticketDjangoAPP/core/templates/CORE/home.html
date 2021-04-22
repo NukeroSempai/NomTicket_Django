@@ -1,7 +1,7 @@
-{% extends "empleado/base.html" %}
+{% extends "CORE/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<p id="titulo_terciario">Bienvenido</p>
+<p id="titulo_terciario">{{ empleado.nom_emp | upper }} Bienvenido!!!</p>
 <form action="" method="post" autocomplete="off">
     {% csrf_token %}
     {{form|crispy}}

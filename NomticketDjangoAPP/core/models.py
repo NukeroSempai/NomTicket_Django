@@ -71,17 +71,17 @@ class TURNO(models.Model):
     def __str__(self):
         return self.nombre
 #**************************************************************************************************************
-class COMUNA(models.Model):
-    id_comuna = models.AutoField(primary_key=True)
-    nombre = models.CharField("nombre comuna",max_length=30,null=False,blank=False)
+class EMPRESA(models.Model):
+    id_empresa = models.AutoField(primary_key=True)
+    nombre_empresa = models.CharField("nombre empresa",max_length=30,null=False,blank=False)
 
     class Meta:
-        verbose_name ="comuna"
-        verbose_name_plural ="comunas"
-        db_table="COMUNA"
+        verbose_name ="empresa"
+        verbose_name_plural ="empresas"
+        db_table="EMPRESA"
 
     def __str__(self):
-        return self.nombre
+        return self.nombre_empresa
 #**************************************************************************************************************
 class EMPLEADO(models.Model):
     rut_emp = models.CharField("rut empleado (sin puntos con guion)",primary_key=True,max_length=10,null=False,blank=False)
@@ -89,7 +89,7 @@ class EMPLEADO(models.Model):
     appaterno_emp = models.CharField("apellido paterno",max_length=30,null=False,blank=False)
     apmaterno_emp = models.CharField("apellido materno",max_length=30,null=False,blank=False)
     clave = models.CharField("contraseña",max_length=50,null=False,blank=False)
-    fk_comuna = models.ForeignKey(COMUNA,on_delete=models.PROTECT,null=False)
+    fk_empresa = models.ForeignKey(EMPRESA,on_delete=models.PROTECT,null=False)
     fk_perfil = models.ForeignKey(PERFIL,on_delete=models.PROTECT,null=False)
     fk_turno = models.ForeignKey(TURNO,on_delete=models.PROTECT,null=False)
 
@@ -120,10 +120,24 @@ class TICKET(models.Model):
     def __str__(self):
         return f"{self.codigo_ticket},{self.fecha_imp},{self.estado}"
 #**************************************************************************************************************
+class SUCURSAL(models.Model):
+    id_sucursal = models.AutoField(primary_key=True)    #clave primaria 
+    nombre_sucursal = models.CharField("nombre sucursal",max_length=50,null=False,blank=False)
+    direccion_sucursal = models.CharField("direccion sucursal",max_length=150,null=False,blank=False)
+
+    class Meta:
+        verbose_name = "sucursal"
+        verbose_name_plural ="sucursales"
+        db_table ="SUCURSAL"
+
+    def __str__(self):
+        return self.nombre_sucursal
+#**************************************************************************************************************
 class CAJERO(models.Model):
     rut_cajero = models.CharField("rut cajero",primary_key=True,null=False,blank=False,max_length=10)  #clave primaria
     nombre = models.CharField("nombre cajero",max_length=30,null=False,blank=False)
     clave = models.CharField("contraseña",max_length=50,null=False,blank=False)
+    fk_sucursal = models.ForeignKey(SUCURSAL,on_delete=models.PROTECT,null=False)
 
     class Meta:
         verbose_name ="cajero"
@@ -231,4 +245,5 @@ class INFORME_TICKET(models.Model):
     def __str__(self)        :
         return f"{self.correlativo_inf},{self.fecha_informe},{self.total_ventas}"
 #**************************************************************************************************************
+
 

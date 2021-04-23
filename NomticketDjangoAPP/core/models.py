@@ -137,6 +137,8 @@ class CAJERO(models.Model):
     rut_cajero = models.CharField("rut cajero",primary_key=True,null=False,blank=False,max_length=10)  #clave primaria
     nombre = models.CharField("nombre cajero",max_length=30,null=False,blank=False)
     clave = models.CharField("contraseña",max_length=50,null=False,blank=False)
+    estado = models.BooleanField("habilitado",null=False,default=False)
+    administrador = models.BooleanField("Administrador",null=False,default=False)
     fk_sucursal = models.ForeignKey(SUCURSAL,on_delete=models.PROTECT,null=False)
 
     class Meta:

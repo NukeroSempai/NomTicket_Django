@@ -48,6 +48,7 @@ class PERFIL(models.Model):
     ticket_diario = models.PositiveIntegerField("cantidad de tickets diarios",null=False,default=1)
     valor = models.PositiveIntegerField("valor ticket",null=False)
     bonificacion = models.PositiveIntegerField("bonificacion",null=False,default=0)
+    saldo = models.IntegerField("Saldo disponible",null=False)
 
     class Meta:
         verbose_name ="perfil"
@@ -84,7 +85,8 @@ class EMPRESA(models.Model):
         return self.nombre_empresa
 #**************************************************************************************************************
 class EMPLEADO(models.Model):
-    rut_emp = models.CharField("rut empleado (sin puntos con guion)",primary_key=True,max_length=10,null=False,blank=False)
+    codigo_emp = models.AutoField(primary_key=True)     #clave primaria
+    rut_emp = models.CharField("rut empleado (sin puntos con guion)",max_length=10,null=False,blank=False)
     nom_emp = models.CharField("nombre",max_length=30,null=False,blank=False)
     appaterno_emp = models.CharField("apellido paterno",max_length=30,null=False,blank=False)
     apmaterno_emp = models.CharField("apellido materno",max_length=30,null=False,blank=False)
@@ -179,18 +181,18 @@ class BOLETA(models.Model):
     def __str__(self):
         return f"{self.num_boleta},{self.fecha_boleta},{self.valor_total}"
 #**************************************************************************************************************
-class DETALLE_BOLETA(models.Model):
-    fk_num_boleta = models.ForeignKey(BOLETA,on_delete=models.PROTECT,null=False)
+class DETALLE_TICKET(models.Model):
+    fk_num_ticket = models.ForeignKey(TICKET,on_delete=models.PROTECT,null=False)
     fk_codigo_producto = models.ForeignKey(PRODUCTO,on_delete=models.PROTECT,null=False)
     cantidad = models.PositiveIntegerField("cantidad")
 
     class Meta:
-        verbose_name = "detalle boleta"
-        verbose_name_plural = "detalle boletas"
-        db_table="DETALLE_BOLETA"
+        verbose_name = "detalle ticket"
+        verbose_name_plural = "detalle tickets"
+        db_table="DETALLE_TICKET"
 
     def __str__(self):
-        return f"{self.fk_num_boleta},{self.fk_codigo_producto},{self.cantidad}"
+        return f"{self.fk_num_ticket},{self.fk_codigo_producto},{self.cantidad}"
 #**************************************************************************************************************
 class AUDITORIA(models.Model):
     correlativo_aud = models.AutoField(primary_key=True)    #clave primaria

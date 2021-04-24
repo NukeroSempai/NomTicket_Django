@@ -237,6 +237,8 @@ class ERRORES(models.Model):
 class INFORME_TICKET(models.Model):
     correlativo_inf = models.AutoField(primary_key=True)    #clave primaria
     fecha_informe = models.DateField("fecha informe",auto_now=False,auto_now_add=True,null=False)
+    fecha_inicio = models.DateField("fecha inicio",auto_now=False,auto_now_add=True,null=False)
+    fecha_termino = models.DateField("fecha termino",auto_now=False,auto_now_add=True,null=False)
     cant_boletas = models.PositiveIntegerField("cantidad de boletas")
     cant_tickets = models.PositiveIntegerField("cantidad de tickets")
     total_ventas = models.PositiveIntegerField("total de ventas")

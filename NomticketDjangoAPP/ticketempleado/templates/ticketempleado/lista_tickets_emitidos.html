@@ -1,0 +1,53 @@
+{% extends 'base_layout.html' %}
+
+{% block content %} 
+  <div class="row titulo">
+      <div class="titulo-texto">
+          <h1>EMPLEADO - TICKETS EMITIDOS</h1>
+      </div>
+  </div>
+
+  <div class="row login-status">
+    <div class="col-xl-8 bienvenido">
+      <p>BIENVENIDO/A SR/A</p>
+    </div>
+    <div class="col-xl-2 boton-tickets-emitidos">
+      <a class="btn btn-primary" href="{% url 'empleado' %}" role="button">Atrás</a>
+    </div>
+    <div class="col-xl-2 boton-salir">
+      <a class="btn btn-primary" href="#" role="button">Salir</a>
+    </div>
+  </div>
+
+  <div class="row centro">
+    <div class="col producto">
+      <div class="row">
+        <div class="producto-lista">
+          <div class="row ticket-unidad">
+            <p>Ticket 01</p>
+          </div>
+          <div class="row ticket-unidad">
+            <p>Ticket 02</p>
+          </div>
+          <div class="row ticket-unidad">
+            <p>Ticket 03</p>
+          </div>
+          <div class="row ticket-unidad">
+            <p>Ticket 04</p>
+          </div>
+          <div class="row ticket-unidad">
+            <p>Ticket 05</p>
+          </div>
+          <div class="row ticket-unidad">
+            <p>Ticket 06</p>
+          </div>
+          <div class="row ticket-unidad">
+            <p>Ticket 07</p>
+          </div>
+          <div class="row ticket-unidad">
+            <p>Ticket 08</p>
+          </div>  
+        </div>
+      </div>      
+  </div>
+{% endblock %}

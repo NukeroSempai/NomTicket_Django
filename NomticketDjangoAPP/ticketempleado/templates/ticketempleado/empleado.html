@@ -1,0 +1,93 @@
+{% extends 'base_layout.html' %}
+
+{% block content %} 
+  <div class="row titulo">
+      <div class="titulo-texto">
+          <h1>EMITIR VALE - EMPLEADO</h1>
+      </div>
+  </div>
+
+  <div class="row login-status">
+    <div class="col-xl-8 bienvenido">
+      <p>BIENVENIDO/A SR/A</p>
+    </div>
+    <div class="col-xl-2 boton-tickets-emitidos">
+      <a class="btn btn-primary" href="{% url 'tickets-emitidos' %}" role="button">Ver tickets emitidos</a>
+    </div>
+    <div class="col-xl-2 boton-salir">
+      <a class="btn btn-primary" href="#" role="button">Salir</a>
+    </div>
+  </div>
+
+  <div class="row centro">
+    <div class="col producto">
+      <div class="row">
+        <div class="producto-texto">
+          <h3>Seleccione producto</h3>
+        </div>
+        <div class="producto-lista">
+          <div class="row producto-unidad">
+            <p>Producto 01</p>
+          </div>
+          <div class="row producto-unidad">
+            <p>Producto 02</p>
+          </div>
+          <div class="row producto-unidad">
+            <p>Producto 03</p>
+          </div>
+          <div class="row producto-unidad">
+            <p>Producto 04</p>
+          </div>
+          <div class="row producto-unidad">
+            <p>Producto 05</p>
+          </div>
+          <div class="row producto-unidad">
+            <p>Producto 06</p>
+          </div>
+          <div class="row producto-unidad">
+            <p>Producto 07</p>
+          </div>
+          <div class="row producto-unidad">
+            <p>Producto 08</p>
+          </div>
+          <div class="row producto-unidad">
+            <p>Producto 09</p>
+          </div>
+          <div class="row producto-unidad">
+            <p>Producto 10</p>
+          </div>
+          <div class="row producto-unidad">
+            <p>Producto 11</p>
+          </div>
+          <div class="row producto-unidad">
+            <p>Producto 12</p>
+          </div>
+          <div class="row producto-unidad">
+            <p>Producto 13</p>
+          </div>
+          <div class="row producto-unidad">
+            <p>Producto 14</p>
+          </div>
+          <div class="row producto-unidad">
+            <p>Producto 15</p>
+          </div>
+        </div>
+      </div>      
+    </div>
+    <div class="col derecha">
+      <div class="row saldo">
+        <h1>Saldo: saldo</h1>
+      </div>
+      <div class="row prod-seleccionados">
+        <p>Producto(s) Seleccionado(s):</p>
+        <p>Producto</p>
+        <p>Producto</p>
+        <p>Producto</p>  
+      </div>
+      <div class="row boton-emitir-ticket">
+        <a class="btn btn-primary" href="#" role="button">Emitir Ticket</a>
+      </div>
+    </div>
+    
+  </div>
+{% endblock %}

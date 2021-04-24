@@ -81,9 +81,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
         'NAME': 'orcl',
-        'USER': 'BDNOMTICKET',
-        'PASSWORD': '@Portafolio2021',        
-        'HOST':'168.138.146.58',
+        'USER': 'prueba1',
+        'PASSWORD': 'prueba1',        
+        'HOST':'localhost',
         'PORT':'1521'
     }
 }
@@ -129,4 +129,4 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL='/CORE/home'
 
-LOGOUT_REDIRECT_URL='/accounts/login'
+LOGOUT_REDIRECT_URL='/CORE/login'

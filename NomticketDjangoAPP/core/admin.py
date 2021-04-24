@@ -20,7 +20,7 @@ class AUDITORIA_ADMIN(admin.ModelAdmin):
     list_display=("correlativo_aud","fecha_auditoria")
 
 class DETALLE_AUDITORIA_ADMIN(admin.ModelAdmin):
-    list_display=("fk_correlativo_aud","fk_rut_emp")
+    list_display=("fk_correlativo_aud","fk_codigo_emp")
 
 class ERRORES_ADMIN(admin.ModelAdmin):
     list_display=("correlativo_error","fecha_error","nombre_modulo")

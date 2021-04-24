@@ -111,7 +111,7 @@ class TICKET(models.Model):
     estado = models.BooleanField("estado del ticket",default=True)
     valor = models.PositiveIntegerField("valor ticket")
     comentario = models.TextField("comentario",null=True,blank=True,max_length=100)
-    fk_rut_emp = models.ForeignKey(EMPLEADO,on_delete=models.PROTECT,null=False) 
+    fk_codigo_emp = models.ForeignKey(EMPLEADO,on_delete=models.PROTECT,null=False) 
     fk_tipo_ticket = models.ForeignKey(TIPO_TICKET,on_delete=models.PROTECT,null=False)
 
     class Meta:
@@ -208,7 +208,7 @@ class AUDITORIA(models.Model):
 #**************************************************************************************************************
 class DETALLE_AUDITORIA(models.Model):
     fk_correlativo_aud = models.ForeignKey(AUDITORIA,on_delete=models.PROTECT,null=False)
-    fk_rut_emp = models.ForeignKey(EMPLEADO,on_delete=models.PROTECT,null=False)
+    fk_codigo_emp = models.ForeignKey(EMPLEADO,on_delete=models.PROTECT,null=False)
     fecha_no_uso = models.DateField("fecha no uso",null=False)
 
     class Meta:
@@ -217,7 +217,7 @@ class DETALLE_AUDITORIA(models.Model):
         db_table ="DETALLE_AUDITORIA"
 
     def __str__(self):
-        return f"{self.fk_correlativo_aud},{self.fk_rut_emp}"
+        return f"{self.fk_correlativo_aud},{self.fk_codigo_emp}"
 #**************************************************************************************************************
 class ERRORES(models.Model):
     correlativo_error = models.AutoField(primary_key=True)      #clave primaria 

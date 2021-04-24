@@ -47,8 +47,7 @@ class PERFIL(models.Model):
     nombre_prefil = models.CharField("nombre prefil",null=False,blank=False,max_length=30)
     ticket_diario = models.PositiveIntegerField("cantidad de tickets diarios",null=False,default=1)
     valor = models.PositiveIntegerField("valor ticket",null=False)
-    bonificacion = models.PositiveIntegerField("bonificacion",null=False,default=0)
-    saldo = models.IntegerField("Saldo disponible",null=False)
+    bonificacion = models.PositiveIntegerField("bonificacion",null=False,default=0)    
 
     class Meta:
         verbose_name ="perfil"
@@ -91,6 +90,7 @@ class EMPLEADO(models.Model):
     appaterno_emp = models.CharField("apellido paterno",max_length=30,null=False,blank=False)
     apmaterno_emp = models.CharField("apellido materno",max_length=30,null=False,blank=False)
     clave = models.CharField("contraseña",max_length=50,null=False,blank=False)
+    saldo = models.PositiveIntegerField("Saldo disponible",null=True)
     fk_empresa = models.ForeignKey(EMPRESA,on_delete=models.PROTECT,null=False)
     fk_perfil = models.ForeignKey(PERFIL,on_delete=models.PROTECT,null=False)
     fk_turno = models.ForeignKey(TURNO,on_delete=models.PROTECT,null=False)

@@ -1,0 +1,83 @@
+{% extends 'base_layout.html' %}
+
+{% block content %} 
+  <div class="row titulo">
+      <div class="titulo-texto">
+          <h1>EMITIR TICKET - EMPLEADO</h1>
+      </div>
+  </div>
+
+  <div class="row login-status">
+    <div class="col-xl-8 bienvenido">
+      <p>BIENVENIDO/A SR/A</p>
+    </div>
+    <div class="col-xl-2 boton-tickets-emitidos">
+      <a class="btn btn-primary" href="{% url 'tickets-emitidos' %}" role="button">Ver tickets emitidos</a>
+    </div>
+    <div class="col-xl-2 boton-salir">
+      <a class="btn btn-primary" href="#" role="button">Salir</a>
+    </div>
+  </div>
+
+  <div class="row centro">
+
+    <div class="col producto">
+      <div class="row">
+        <div class="producto-texto">
+          <h3>Seleccione producto</h3>
+        </div>
+        <div class="campos-producto">
+          <div class="row">
+            <div class="col campo-texto">
+              <p>CÓD. PRODUCTO</p>
+            </div>
+            <div class="col campo-texto">
+              <p>PRODUCTO</p>
+            </div>
+            <div class="col campo-texto">
+              <p>DESCRIPCIÓN</p>
+            </div>
+            <div class="col campo-texto">
+              <p>PRECIO</p>
+            </div>
+          </div>
+        </div>
+        <div class="producto-lista">
+          <div class="row producto-entry">
+            <div class="col campo">
+              <p>codproducto</p>
+            </div>
+            <div class="col campo">
+              <p>producto</p>
+            </div>
+            <div class="col campo">
+              <p>descripcion</p>
+            </div>
+            <div class="col campo">
+              <p>precio</p>
+            </div>
+          </div>  
+        </div>
+      </div> 
+
+    </div>
+
+    <div class="col derecha">
+      <div class="row">
+        <div class="producto-texto">
+          <h3>SALDO: SALDO</h3>
+        </div>
+      </div>
+      <div class="row prod-seleccionados">
+        <p>PRODUCTOS(S) SELECCIONADO(S):</p>
+        <p>Producto</p>
+        <p>Producto</p>
+        <p>Producto</p>  
+      </div>
+      <div class="row boton-emitir-ticket">
+        <a class="btn btn-primary" href="{% url 'ticket-empleado' %}" role="button">Emitir Ticket</a>
+      </div>
+    </div>
+    
+  </div>
+{% endblock %}

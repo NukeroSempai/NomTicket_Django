@@ -145,10 +145,6 @@ a, a:hover, a:visited{
     border: 1px #fff solid;
 }
 
-.producto-unidad:hover{
-    background-color: #d1732a;
-}
-
 .producto-unidad p{
     font-size: 18px;
     margin: auto;
@@ -190,4 +186,30 @@ a, a:hover, a:visited{
 
 .ticket-unidad{
     border: 0.5px solid #fff;
+}
+
+.campo-texto{
+    background-color: #a19692;
+    font-size: 14px;
+    text-align: left;
+    border: 1px solid #fcf3f0;
+    height: 30px;
+}
+
+.campo-texto p{
+    margin: 0 auto;
+}
+
+.producto-lista .producto-entry{
+    border: 1px solid #fcf3f0;
+    height: 30px;
+    background-color: #b34404;
+}
+
+.producto-lista .producto-entry:hover{
+    background-color: #b55924;
+}
+
+.producto-lista .producto-entry p{
+    font-size: 14px;
 }

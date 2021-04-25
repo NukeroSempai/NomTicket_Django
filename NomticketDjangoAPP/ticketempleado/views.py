@@ -9,3 +9,6 @@ def login_empleado(request):
 
 def empleado(request):
     return render(request, 'ticketempleado/empleado.html')
+
+def ticket_empleado(request):
+    return render(request, 'ticketempleado/ticket_empleado.html')

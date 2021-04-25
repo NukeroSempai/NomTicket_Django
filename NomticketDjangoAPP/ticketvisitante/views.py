@@ -6,3 +6,6 @@ def login_visitante(request):
 
 def visitante(request):
     return render(request, 'ticketvisitante/visitante.html')
+
+def ticket_visitante(request):
+    return render(request, 'ticketvisitante/ticket_visitante.html')

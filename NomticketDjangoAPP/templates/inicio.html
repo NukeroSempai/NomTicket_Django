@@ -1,0 +1,35 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+  <div class="row titulo">
+
+  </div>
+
+  <div class="row login-status">
+
+  </div>
+
+  <div class="row centro">
+    <div class="col">
+      <a href="{% url 'login-empleado' %}">
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" type="button">INGRESAR COMO EMPLEADO</button>
+        </div>
+      </a>
+    </div>
+    <div class="col">
+      <a href="{% url 'login-visitante' %}">
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" type="button">INGRESAR COMO VISITANTE</button>
+        </div>
+      </a>
+    </div>
+    <div class="col">
+      <a href="#">
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" type="button">INGRESAR COMO ADMINISTRADOR</button>
+        </div>
+      </a>
+    </div>
+  </div>
+{% endblock %}

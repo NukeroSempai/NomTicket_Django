@@ -91,6 +91,7 @@ class EMPLEADO(models.Model):
     apmaterno_emp = models.CharField("apellido materno",max_length=30,null=False,blank=False)
     clave = models.CharField("contraseña",max_length=50,null=False,blank=False)
     saldo = models.PositiveIntegerField("Saldo disponible",null=True)
+    email = models.EmailField("email empleado",max_length=100,null=True,blank=False)
     fk_empresa = models.ForeignKey(EMPRESA,on_delete=models.PROTECT,null=False)
     fk_perfil = models.ForeignKey(PERFIL,on_delete=models.PROTECT,null=False)
     fk_turno = models.ForeignKey(TURNO,on_delete=models.PROTECT,null=False)

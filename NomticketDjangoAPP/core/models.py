@@ -44,7 +44,7 @@ class TIPO_TICKET(models.Model):
 #**************************************************************************************************************
 class PERFIL(models.Model):
     id_perfil = models.AutoField(primary_key=True)      #clave primaria
-    nombre_prefil = models.CharField("nombre prefil",null=False,blank=False,max_length=30)
+    nombre_perfil = models.CharField("nombre prefil",null=False,blank=False,max_length=30)
     ticket_diario = models.PositiveIntegerField("cantidad de tickets diarios",null=False,default=1)
     valor = models.PositiveIntegerField("valor ticket",null=False)
     bonificacion = models.PositiveIntegerField("bonificacion",null=False,default=0)    
@@ -55,7 +55,7 @@ class PERFIL(models.Model):
         db_table = "PERFIL"
 
     def __str__(self):
-        return self.nombre_prefil
+        return self.nombre_perfil
 #**************************************************************************************************************
 class TURNO(models.Model):
     id_turno = models.AutoField(primary_key=True)   #Clave primaria

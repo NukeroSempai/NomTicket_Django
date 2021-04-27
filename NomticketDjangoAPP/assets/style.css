@@ -190,7 +190,7 @@ a, a:hover, a:visited{
 
 .campo-texto{
     background-color: #a19692;
-    font-size: 14px;
+    font-size: 12px;
     text-align: left;
     border: 1px solid #fcf3f0;
     height: 30px;
@@ -212,4 +212,8 @@ a, a:hover, a:visited{
 
 .producto-lista .producto-entry p{
     font-size: 14px;
+}
+
+.campo .desc p{
+    font-size: 6px;
 }

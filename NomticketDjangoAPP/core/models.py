@@ -167,10 +167,11 @@ class FORMA_PAGO(models.Model):
 class BOLETA(models.Model):
     num_boleta = models.AutoField(primary_key=True)     #clave primaria
     fecha_boleta = models.DateField("fecha emision",auto_now=False,auto_now_add=True)
+    hora_venta = models.CharField("hora venta",max_length=5,null=False,blank=False)
     valor_total = models.PositiveIntegerField("total")
     valor_ticket = models.PositiveIntegerField("valor ticket")
     saldo_por_pagar = models.PositiveIntegerField("saldo por pagar",null=True,default=0)
-    fk_codigo_ticket = models.ForeignKey(TICKET,on_delete=models.PROTECT,null=False)
+    fk_codigo_ticket = models.ForeignKey(TICKET,on_delete=models.PROTECT,null=True)
     fk_forma_pago = models.ForeignKey(FORMA_PAGO,on_delete=models.PROTECT,null=False)
     fk_rut_cajero = models.ForeignKey(CAJERO,on_delete=models.PROTECT,null=False)
 
@@ -182,18 +183,18 @@ class BOLETA(models.Model):
     def __str__(self):
         return f"{self.num_boleta},{self.fecha_boleta},{self.valor_total}"
 #**************************************************************************************************************
-class DETALLE_TICKET(models.Model):
-    fk_num_ticket = models.ForeignKey(TICKET,on_delete=models.PROTECT,null=False)
+class DETALLE_BOLETA(models.Model):
+    fk_num_boleta = models.ForeignKey(BOLETA,on_delete=models.PROTECT,null=False)
     fk_codigo_producto = models.ForeignKey(PRODUCTO,on_delete=models.PROTECT,null=False)
     cantidad = models.PositiveIntegerField("cantidad")
 
     class Meta:
-        verbose_name = "detalle ticket"
-        verbose_name_plural = "detalle tickets"
-        db_table="DETALLE_TICKET"
+        verbose_name = "detalle boleta"
+        verbose_name_plural = "detalles boletas"
+        db_table="DETALLE_BOLETA"
 
     def __str__(self):
-        return f"{self.fk_num_ticket},{self.fk_codigo_producto},{self.cantidad}"
+        return f"{self.fk_num_boleta},{self.fk_codigo_producto},{self.cantidad}"
 #**************************************************************************************************************
 class AUDITORIA(models.Model):
     correlativo_aud = models.AutoField(primary_key=True)    #clave primaria
@@ -240,6 +241,7 @@ class INFORME_TICKET(models.Model):
     fecha_informe = models.DateField("fecha informe",auto_now=False,auto_now_add=True,null=False)
     fecha_inicio = models.DateField("fecha inicio",auto_now=False,auto_now_add=True,null=False)
     fecha_termino = models.DateField("fecha termino",auto_now=False,auto_now_add=True,null=False)
+    tipo_servicio = models.ForeignKey(TIPO_PRODUCTO,on_delete=models.PROTECT,null=False)
     cant_boletas = models.PositiveIntegerField("cantidad de boletas")
     cant_tickets = models.PositiveIntegerField("cantidad de tickets")
     total_ventas = models.PositiveIntegerField("total de ventas")

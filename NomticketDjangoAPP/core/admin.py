@@ -15,7 +15,8 @@ class BOLETA_ADMIN(admin.ModelAdmin):
 
 class DETALLE_BOLETA_ADMIN(admin.ModelAdmin):
     list_display=("fk_num_boleta","fk_codigo_producto","cantidad")
-
+class PEDIDO_TICKET_ADMIN(admin.ModelAdmin):
+    list_display=("fk_num_ticket","fk_codigo_producto","cantidad")
 class AUDITORIA_ADMIN(admin.ModelAdmin):
     list_display=("correlativo_aud","fecha_auditoria")
 
@@ -40,6 +41,7 @@ admin.site.register(EMPLEADO,EMPLEADO_ADMIN)
 admin.site.register(TICKET,TICKET_ADMIN)
 admin.site.register(BOLETA,BOLETA_ADMIN)
 admin.site.register(DETALLE_BOLETA,DETALLE_BOLETA_ADMIN)
+admin.site.register(PEDIDO_TICKET,PEDIDO_TICKET_ADMIN)
 admin.site.register(PRODUCTO,PRODUCTO_ADMIN)
 admin.site.register(TIPO_PRODUCTO)
 admin.site.register(ERRORES,ERRORES_ADMIN)

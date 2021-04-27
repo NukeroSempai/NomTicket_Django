@@ -196,6 +196,20 @@ class DETALLE_BOLETA(models.Model):
     def __str__(self):
         return f"{self.fk_num_boleta},{self.fk_codigo_producto},{self.cantidad}"
 #**************************************************************************************************************
+#**************************************************************************************************************
+class PEDIDO_TICKET(models.Model):
+    fk_num_ticket = models.ForeignKey(TICKET,on_delete=models.PROTECT,null=False)
+    fk_codigo_producto = models.ForeignKey(PRODUCTO,on_delete=models.PROTECT,null=False)
+    cantidad = models.PositiveIntegerField("cantidad")
+
+    class Meta:
+        verbose_name = "pedido ticket"
+        verbose_name_plural = "pedidos tickets"
+        db_table="PEDIDO TICKET"
+
+    def __str__(self):
+        return f"{self.fk_num_ticket},{self.fk_codigo_producto},{self.cantidad}"
+#**************************************************************************************************************
 class AUDITORIA(models.Model):
     correlativo_aud = models.AutoField(primary_key=True)    #clave primaria
     fecha_auditoria = models.DateField("fecha auditoria",auto_now=False,auto_now_add=True)

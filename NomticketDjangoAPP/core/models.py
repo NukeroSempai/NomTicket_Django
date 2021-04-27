@@ -205,7 +205,7 @@ class PEDIDO_TICKET(models.Model):
     class Meta:
         verbose_name = "pedido ticket"
         verbose_name_plural = "pedidos tickets"
-        db_table="PEDIDO TICKET"
+        db_table="PEDIDO_TICKET"
 
     def __str__(self):
         return f"{self.fk_num_ticket},{self.fk_codigo_producto},{self.cantidad}"
